@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import PassportBackupControls from "./PassportBackupControls";
 import MedicalProfessionalTools from "./MedicalProfessionalTools";
 import EmergencyTools from "./EmergencyTools";
+import FeedbackTools from "./FeedbackTools";
 import "./globals.css";
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
@@ -41,6 +42,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         {children}
         <MedicalProfessionalTools />
         <EmergencyTools />
+        <FeedbackTools />
         <PassportBackupControls />
       </body>
     </html>
