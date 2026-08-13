@@ -3,7 +3,16 @@
   "short_name": "Sensory Passport",
   "description": "Create, save, and share a personal sensory guide.",
   "start_url": "/",
+  "scope": "/",
   "display": "standalone",
   "background_color": "#fbf8f0",
-  "theme_color": "#177f78"
+  "theme_color": "#177f78",
+  "icons": [
+    {
+      "src": "/app-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
 }
