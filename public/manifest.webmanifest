@@ -1,0 +1,9 @@
+{
+  "name": "Sensory Passport",
+  "short_name": "Sensory Passport",
+  "description": "Create, save, and share a personal sensory guide.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#fbf8f0",
+  "theme_color": "#177f78"
+}
