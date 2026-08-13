@@ -1,46 +1,28 @@
-# Sensory-passport# Sensory Passport
+# Sensory Passport
 
-Sensory Passport is a platform designed to help individuals and families communicate sensory preferences, needs, and helpful accommodations.
+Sensory Passport helps individuals and families communicate sensory preferences, needs, and helpful accommodations.
 
-## Our Mission
+## What this first version includes
 
-Our mission is to make everyday experiences more accessible, comfortable, and inclusive for people with sensory sensitivities.
+- A welcoming, mobile-friendly landing page
+- A personal sensory profile builder
+- Fields for communication, sensitivities, comfort supports, and things to avoid
+- Private on-device saving with browser storage
+- A printable Sensory Passport
+- A copyable plain-text summary
 
-Sensory Passport gives individuals and families an easy way to communicate what helps them feel safe, comfortable, and understood.
+## Run locally
 
-## What Sensory Passport Does
+1. Install dependencies with `npm install`.
+2. Start the development server with `npm run dev`.
+3. Open `http://localhost:3000`.
 
-- Creates personalized sensory profiles
-- Records sound, lighting, touch, and communication preferences
-- Identifies helpful accommodations
-- Helps individuals communicate their needs
-- Supports parents and caregivers
-- Helps businesses provide sensory-friendly experiences
-- Creates a printable and shareable Sensory Passport
+## Privacy
 
-## Who It's For
+Profile information is stored locally in the user's browser. This first version does not send profile details to a server.
 
-Sensory Passport can be used by:
+## Vision
 
-- Individuals with sensory sensitivities
-- Children and adults
-- Parents and caregivers
-- Autistic individuals
-- Barbers and salons
-- Healthcare providers
-- Schools and educators
-- Restaurants
-- Entertainment venues
-- Other sensory-friendly businesses and organizations
-
-## Current Status
-
-Sensory Passport is currently in development.
-
-The first prototype includes a sensory profile builder that allows users to create and print their own Sensory Passport.
-
-## Future Vision
-
-Future versions may include user accounts, QR-code sharing, business profiles, saved sensory passports, caregiver access, and a directory of sensory-friendly businesses.
+Future versions may include secure accounts, caregiver access, QR-code sharing, business profiles, and a directory of sensory-friendly organizations.
 
 © 2026 Sensory Passport Inc.
