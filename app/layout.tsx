@@ -10,6 +10,18 @@ export const metadata: Metadata = {
   description: "Create, save, and share a personal sensory guide for appointments, school, haircuts, work, and everyday life.",
   applicationName: "Sensory Passport",
   manifest: "/manifest.webmanifest",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "Sensory Passport",
+  },
+  icons: {
+    icon: [
+      { url: "/app-icon.svg", type: "image/svg+xml" },
+      { url: "/icon-192.png", sizes: "192x192", type: "image/png" },
+    ],
+    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
+  },
   other: {
     "mobile-web-app-capable": "yes",
     "apple-mobile-web-app-capable": "yes",
@@ -21,7 +33,7 @@ export const viewport: Viewport = { themeColor: "#177f78" };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>{children}</body>
     </html>
   );
