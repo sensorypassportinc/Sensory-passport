@@ -1,0 +1,69 @@
+"use client";
+
+import { ChangeEvent, useEffect, useState } from "react";
+
+type MedicalPrefs = {
+  painCues:string; touchExam:string; needles:string; vitals:string; medication:string; procedures:string; other:string;
+};
+
+type PassportData = {
+  passport?: { name?:string; communication?:string; sensitivities?:string; helps?:string; avoid?:string; contact?:string };
+  comfort?: string; beforeBegin?: string[]; cards?: string[];
+};
+
+const emptyPrefs: MedicalPrefs = { painCues:"", touchExam:"", needles:"", vitals:"", medication:"", procedures:"", other:"" };
+const fields: {key:keyof MedicalPrefs; label:string; hint:string}[] = [
+  {key:"painCues",label:"Pain or distress may look like",hint:"Examples: becomes quiet, paces, cries, shuts down, says 'I'm okay' even when uncomfortable…"},
+  {key:"touchExam",label:"Touch & physical exam preferences",hint:"Examples: ask before touching, explain where you will touch, caregiver demonstrates first…"},
+  {key:"needles",label:"Needles & blood draws",hint:"Examples: do not show needle, use countdown, numbing cream, caregiver nearby, allow breaks…"},
+  {key:"vitals",label:"Vitals & medical equipment",hint:"Examples: explain blood-pressure cuff first, pulse ox on preferred finger, headphones for machines…"},
+  {key:"medication",label:"Medication / swallowing preferences",hint:"Examples: difficulty swallowing pills, prefers liquid when available, needs extra time…"},
+  {key:"procedures",label:"What helps during procedures",hint:"Examples: one person speaking, dim lights, clear steps, breaks, comfort item, distraction…"},
+  {key:"other",label:"Other medical-visit support notes",hint:"Anything else staff should know to make the visit more accessible."},
+];
+
+export default function MedicalProfessionalTools(){
+  const [open,setOpen]=useState(false);
+  const [editing,setEditing]=useState(false);
+  const [prefs,setPrefs]=useState<MedicalPrefs>(emptyPrefs);
+  const [passport,setPassport]=useState<PassportData>({});
+  useEffect(()=>{
+    try{ const raw=localStorage.getItem("sensory-passport"); if(raw)setPassport(JSON.parse(raw)); }catch{}
+    try{ const raw=localStorage.getItem("sensory-passport-medical"); if(raw)setPrefs({...emptyPrefs,...JSON.parse(raw)}); }catch{}
+  },[open]);
+  function update(e:ChangeEvent<HTMLTextAreaElement>){ setPrefs(v=>({...v,[e.target.name]:e.target.value})); }
+  function save(){ localStorage.setItem("sensory-passport-medical",JSON.stringify(prefs)); setEditing(false); }
+  const p=passport.passport||{};
+  const comfort=passport.comfort||"Not provided";
+  return <>
+    <button onClick={()=>setOpen(true)} style={{position:"fixed",left:14,bottom:18,zIndex:45,border:0,borderRadius:999,padding:"12px 16px",background:"#173c42",color:"white",fontWeight:800,boxShadow:"0 8px 24px #173c4233",cursor:"pointer"}}>For Medical Staff</button>
+    {open&&<section role="dialog" aria-modal="true" aria-label="Medical Professional View" style={{position:"fixed",inset:0,zIndex:120,background:"#f7f6ef",overflow:"auto",padding:"24px"}}>
+      <div style={{maxWidth:1000,margin:"0 auto"}}>
+        <div style={{display:"flex",justifyContent:"space-between",gap:16,alignItems:"flex-start",borderBottom:"4px solid #177f78",paddingBottom:18,marginBottom:18}}>
+          <div><p style={{margin:0,color:"#177f78",fontWeight:900,letterSpacing:1.2,textTransform:"uppercase",fontSize:12}}>Medical Professional View</p><h1 style={{margin:"6px 0",fontFamily:"Georgia,serif",fontSize:42,color:"#173c42"}}>{p.name||"Sensory Passport"}</h1><p style={{margin:0,color:"#607b7e"}}>Quick support guide for a medical visit</p></div>
+          <button onClick={()=>setOpen(false)} style={{width:44,height:44,border:0,borderRadius:"50%",background:"#173c42",color:"white",fontSize:28,cursor:"pointer"}} aria-label="Close medical view">×</button>
+        </div>
+
+        {!editing?<>
+          <div style={{background:"#fff1cc",borderLeft:"7px solid #e6a94b",padding:18,borderRadius:14,marginBottom:16}}><strong>Before you begin</strong><p style={{margin:"8px 0 0"}}>{passport.beforeBegin?.length?passport.beforeBegin.join(" • "):"No specific instructions selected."}</p></div>
+          <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(260px,1fr))",gap:14}}>
+            <article style={{background:"white",padding:18,borderRadius:14}}><strong>Communication</strong><p>{p.communication||"Not provided"}</p></article>
+            <article style={{background:"white",padding:18,borderRadius:14}}><strong>Current comfort level</strong><p style={{textTransform:"capitalize"}}>{comfort}</p></article>
+            <article style={{background:"white",padding:18,borderRadius:14}}><strong>Sensory triggers</strong><p>{p.sensitivities||"Not provided"}</p></article>
+            <article style={{background:"white",padding:18,borderRadius:14}}><strong>What helps</strong><p>{p.helps||"Not provided"}</p></article>
+            <article style={{background:"white",padding:18,borderRadius:14}}><strong>Please avoid</strong><p>{p.avoid||"Not provided"}</p></article>
+            <article style={{background:"white",padding:18,borderRadius:14}}><strong>Support contact</strong><p>{p.contact||"Not provided"}</p></article>
+            {fields.map(f=><article key={f.key} style={{background:"white",padding:18,borderRadius:14,borderTop:"4px solid #177f78"}}><strong>{f.label}</strong><p style={{whiteSpace:"pre-wrap"}}>{prefs[f.key]||"Not provided"}</p></article>)}
+          </div>
+          {passport.cards?.length?<div style={{marginTop:16,background:"#dff3ec",padding:16,borderRadius:14}}><strong>Quick communication messages</strong><p style={{margin:"8px 0 0"}}>{passport.cards.join(" • ")}</p></div>:null}
+          <div style={{display:"flex",gap:10,flexWrap:"wrap",marginTop:18}}><button onClick={()=>setEditing(true)} style={{border:0,borderRadius:999,padding:"12px 18px",background:"#177f78",color:"white",fontWeight:800,cursor:"pointer"}}>Edit medical support notes</button><button onClick={()=>window.print()} style={{border:"1px solid #b9d1cb",borderRadius:999,padding:"12px 18px",background:"white",fontWeight:800,cursor:"pointer"}}>Print / Save PDF</button></div>
+          <p style={{fontSize:12,color:"#607b7e",marginTop:18}}>This view is for communication and accessibility support only. It is not a medical record and does not replace clinical documentation, medication lists, allergy records, or professional medical judgment.</p>
+        </>:<>
+          <h2 style={{fontFamily:"Georgia,serif",color:"#173c42"}}>Medical visit support notes</h2><p style={{color:"#607b7e"}}>Add only what is useful for helping staff support the person during a visit. These notes stay on this device.</p>
+          <div style={{display:"grid",gap:14}}>{fields.map(f=><label key={f.key} style={{fontWeight:800,color:"#173c42"}}>{f.label}<textarea name={f.key} value={prefs[f.key]} onChange={update} placeholder={f.hint} rows={3} style={{width:"100%",marginTop:7,border:"1px solid #c9d8d4",borderRadius:12,padding:12,resize:"vertical"}}/></label>)}</div>
+          <div style={{display:"flex",gap:10,marginTop:18}}><button onClick={save} style={{border:0,borderRadius:999,padding:"12px 18px",background:"#177f78",color:"white",fontWeight:800,cursor:"pointer"}}>Save medical notes</button><button onClick={()=>setEditing(false)} style={{border:"1px solid #b9d1cb",borderRadius:999,padding:"12px 18px",background:"white",fontWeight:800,cursor:"pointer"}}>Cancel</button></div>
+        </>}
+      </div>
+    </section>}
+  </>;
+}
