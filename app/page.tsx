@@ -32,7 +32,7 @@ export default function Home() {
   const [beforeBegin,setBeforeBegin] = useState<string[]>([]);
   const [professionalView,setProfessionalView] = useState(false);
   const [saved,setSaved] = useState(false);
-  useEffect(()=>{ const stored=localStorage.getItem("sensory-passport"); if(stored){ try{const data=JSON.parse(stored);setPassport(data.passport??data);setPhoto(data.photo??"");setComfort(data.comfort??"green");setCards(data.cards??[]);setSituation(data.situation??"General");setPreparation(data.preparation??[]);setBeforeBegin(data.beforeBegin??[])}catch{}} },[]);
+  useEffect(()=>{ const stored=localStorage.getItem("sensory-passport"); if(stored){ try{const data=JSON.parse(stored);setPassport(data.passport??data);setPhoto(data.photo??"");setComfort(data.comfort??"green");setCards(data.cards??[]);setSituation(data.situation??"General");setPreparation(data.preparation??[]);setBeforeBegin(data.beforeBegin??[])}catch{}} if("serviceWorker" in navigator){navigator.serviceWorker.register("/sw.js").catch(()=>{})} },[]);
   function update(key:keyof Passport,value:string){ setPassport(current=>({...current,[key]:value})); setSaved(false); }
   function save(event:FormEvent){ event.preventDefault(); localStorage.setItem("sensory-passport",JSON.stringify({passport,photo,comfort,cards,situation,preparation,beforeBegin})); setSaved(true); }
   function choosePhoto(file?:File){
